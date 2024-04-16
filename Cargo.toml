@@ -1,0 +1,19 @@
+[package]
+name = "icpio"
+version = "0.1.0"
+edition = "2021"
+authors = ["Benjamin Drung <bdrung@posteo.de>"]
+license = "ISC"
+homepage = "https://github.com/bdrung/icpio"
+repository = "https://github.com/bdrung/icpio"
+description = "manage initrd cpio archives"
+readme = "README.md"
+categories = ["command-line-utilities", "compression", "encoding", "filesystem"]
+keywords = ["archive", "cpio", "initrd"]
+
+[dependencies]
+gumdrop = "0.8"
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"

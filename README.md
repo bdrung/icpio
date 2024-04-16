@@ -31,7 +31,7 @@ Zstandard-compressed cpio archive.
 List the content of the initramfs CPIO on an Ubunu 24.04 system:
 
 ```
-$ icpio --examine /boot/initrd.img
+$ icpio --list /boot/initrd.img
 .
 kernel
 kernel/x86

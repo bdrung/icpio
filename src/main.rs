@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: ISC
 
 use std::fs::File;
+use std::io::ErrorKind;
 use std::process::ExitCode;
 
 use gumdrop::Options;
@@ -66,11 +67,16 @@ fn main() -> ExitCode {
     };
 
     if let Err(e) = result {
-        eprintln!(
-            "{}: Error: Failed to {} content of '{}': {}",
-            executable, operation, opts.file, e
-        );
-        return ExitCode::FAILURE;
+        match e.kind() {
+            ErrorKind::BrokenPipe => {}
+            _ => {
+                eprintln!(
+                    "{}: Error: Failed to {} content of '{}': {}",
+                    executable, operation, opts.file, e
+                );
+                return ExitCode::FAILURE;
+            }
+        }
     }
 
     ExitCode::SUCCESS

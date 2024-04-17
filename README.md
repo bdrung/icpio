@@ -3,7 +3,7 @@ icpio
 
 icpio is a tool to manage initramfs CPIO files for the Linux kernel. The Linux
 kernel's
-[initramfs buffer format]([https://www.kernel.org/doc/html/latest/driver-api/early-userspace/buffer-format.html)
+[initramfs buffer format](https://www.kernel.org/doc/html/latest/driver-api/early-userspace/buffer-format.html)
 is based around the `newc` or `crc` CPIO formats. Multiple CPIO archives can be
 concatenated and the last archive can be compressed. Different compression
 algorithms can be used depending on what support was compiled into the Linux

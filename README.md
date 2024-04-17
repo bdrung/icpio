@@ -60,11 +60,11 @@ Quick examples comparing
 Runtime comparison measured with `time` over five runs on different initramfs
 cpios:
 
-| System               | File                        | Size   | Enties | icpio  | lsinitramfs |
-| -------------------- | --------------------------- | ------ | ------ | ------ | ----------- |
-| AMD Ryzen 7 5700G    | initrd.img-6.5.0-27-generic | 102 MB |   3496 | 0.052s |     14.243s |
-| AMD Ryzen 7 5700G    | initrd.img-6.8.0-22-generic |  63 MB |   1934 | 0.042s |      7.239s |
-| Raspberry Pi Zero 2W | initrd.img-6.5.0-1012-raspi |  24 MB |   1537 | 0.647s |     57.235s |
+| System               | File                        | Size   | Entries | icpio  | lsinitramfs |
+| -------------------- | --------------------------- | ------ | ------- | ------ | ----------- |
+| AMD Ryzen 7 5700G    | initrd.img-6.5.0-27-generic | 102 MB |    3496 | 0.052s |     14.243s |
+| AMD Ryzen 7 5700G    | initrd.img-6.8.0-22-generic |  63 MB |    1934 | 0.042s |      7.239s |
+| Raspberry Pi Zero 2W | initrd.img-6.5.0-1012-raspi |  24 MB |    1537 | 0.647s |     57.235s |
 
 icpio is 88 to 274 times faster than lsinitramfs.
 

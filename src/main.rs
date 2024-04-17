@@ -52,8 +52,9 @@ fn main() -> ExitCode {
         }
     };
 
+    let mut stdout = std::io::stdout();
     if opts.examine {
-        match examine_cpio_content(file) {
+        match examine_cpio_content(file, &mut stdout) {
             Ok(()) => {}
             Err(e) => {
                 eprintln!(
@@ -64,7 +65,7 @@ fn main() -> ExitCode {
             }
         }
     } else if opts.list {
-        match list_cpio_content(file) {
+        match list_cpio_content(file, &mut stdout) {
             Ok(()) => {}
             Err(e) => {
                 eprintln!(

@@ -217,11 +217,14 @@ fn decompress(command: &mut Command, file: File) -> Result<ChildStdout> {
     Ok(cmd.stdout.unwrap())
 }
 
-fn read_cpio_and_print_filenames<R: Read + SeekForward>(file: &mut R) -> Result<()> {
+fn read_cpio_and_print_filenames<R: Read + SeekForward, W: Write>(
+    file: &mut R,
+    out: &mut W,
+) -> Result<()> {
     let cpio = CpioFilenameReader { file };
     for f in cpio {
         let filename = f?;
-        println!("{}", filename);
+        writeln!(out, "{}", filename)?;
     }
     Ok(())
 }
@@ -234,17 +237,18 @@ fn seek_to_cpio_end(file: &mut File) -> Result<()> {
     Ok(())
 }
 
-pub fn examine_cpio_content(mut file: File) -> Result<()> {
+pub fn examine_cpio_content<W: Write>(mut file: File, out: &mut W) -> Result<()> {
     loop {
         let command = match read_magic_header(&mut file) {
             None => return Ok(()),
             Some(x) => x?,
         };
-        println!(
+        writeln!(
+            out,
             "{}\t{}",
             file.stream_position()?,
             command.get_program().to_str().unwrap()
-        );
+        )?;
         if command.get_program() == "cpio" {
             seek_to_cpio_end(&mut file)?;
         } else {
@@ -254,17 +258,17 @@ pub fn examine_cpio_content(mut file: File) -> Result<()> {
     Ok(())
 }
 
-pub fn list_cpio_content(mut file: File) -> Result<()> {
+pub fn list_cpio_content<W: Write>(mut file: File, out: &mut W) -> Result<()> {
     loop {
         let mut command = match read_magic_header(&mut file) {
             None => return Ok(()),
             Some(x) => x?,
         };
         if command.get_program() == "cpio" {
-            read_cpio_and_print_filenames(&mut file)?;
+            read_cpio_and_print_filenames(&mut file, out)?;
         } else {
             let mut decompressed = decompress(&mut command, file)?;
-            read_cpio_and_print_filenames(&mut decompressed)?;
+            read_cpio_and_print_filenames(&mut decompressed, out)?;
             break;
         }
     }

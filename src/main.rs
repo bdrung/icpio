@@ -53,28 +53,10 @@ fn main() -> ExitCode {
     };
 
     let mut stdout = std::io::stdout();
-    if opts.examine {
-        match examine_cpio_content(file, &mut stdout) {
-            Ok(()) => {}
-            Err(e) => {
-                eprintln!(
-                    "{}: Error: Failed to examine content of '{}': {}",
-                    executable, opts.file, e
-                );
-                return ExitCode::FAILURE;
-            }
-        }
+    let (operation, result) = if opts.examine {
+        ("examine", examine_cpio_content(file, &mut stdout))
     } else if opts.list {
-        match list_cpio_content(file, &mut stdout) {
-            Ok(()) => {}
-            Err(e) => {
-                eprintln!(
-                    "{}: Error: Failed to list content of '{}': {}",
-                    executable, opts.file, e
-                );
-                return ExitCode::FAILURE;
-            }
-        }
+        ("list", list_cpio_content(file, &mut stdout))
     } else {
         eprintln!(
             "{}: Error: Either --examine or --list must be specified!",
@@ -82,6 +64,14 @@ fn main() -> ExitCode {
         );
         return ExitCode::FAILURE;
     };
+
+    if let Err(e) = result {
+        eprintln!(
+            "{}: Error: Failed to {} content of '{}': {}",
+            executable, operation, opts.file, e
+        );
+        return ExitCode::FAILURE;
+    }
 
     ExitCode::SUCCESS
 }
